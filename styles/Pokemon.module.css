@@ -12,6 +12,17 @@
   width: 200px;
 }
 
+.id{
+  max-width: fit-content;
+  margin: auto;
+  background-color: #444;
+  border-radius: 5px;
+  padding: 5px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .pokemon_container h3 {
   margin: 0.6em auto;
   font-size: 1.2em;

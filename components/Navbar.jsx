@@ -6,19 +6,21 @@ import styles from "../styles/Navbar.module.css";
 export default function Navbar() {
   const router = useRouter();
 
-  console.log(router);
+  
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.logo}>
-        <Image
-          src="/images/pokeball.png"
-          width="30"
-          height="30"
-          alt="PokeNext"
-        />
-        <h1>PokeNext</h1>
-      </div>
+      <Link href="/">
+        <div className={styles.logo}>
+          <Image
+            src="/images/pokeball.png"
+            width="30"
+            height="30"
+            alt="PokeNext"
+          />
+          <h1>PokeNext</h1>
+        </div>
+      </Link>
       <ul className={styles.link_items}>
         <li>
           <Link href="/">

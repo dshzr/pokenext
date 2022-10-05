@@ -1,10 +1,9 @@
 import styles from "../../styles/Pokemon.module.css";
-
+import axios from "axios";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 export const getStaticPaths = async () => {
-  const maxPokemons = 251;
+  const maxPokemons = 240;
   const api = `https://pokeapi.co/api/v2/pokemon/`;
 
   const res = await fetch(`${api}/?limit=${maxPokemons}`);
@@ -13,7 +12,7 @@ export const getStaticPaths = async () => {
 
   const paths = data.results.map((pokemon, index) => {
     return {
-      params: { pokemonId: index.toString() },
+      params: { pokemonId: (index + 1).toString() },
     };
   });
 
@@ -26,20 +25,29 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const id = context.params.pokemonId;
 
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "User-Agent": "*",
+    },
+  });
 
-  const data = await res.json();
+  const data = await res.data;
+
+  const pkData = {
+    name: data.name,
+    id: data.id,
+    types: data.types,
+    height: data.height,
+    weight: data.weight,
+  };
 
   return {
-    props: { pokemon: data },
+    props: { pokemon: pkData },
   };
 };
 
 export default function Pokemon({ pokemon }) {
-  const route = useRouter();
-
-  console.log(route.pathname);
-
   return (
     <div className={styles.pokemon_container}>
       <h1 className={styles.title}>{pokemon.name}</h1>
@@ -50,8 +58,8 @@ export default function Pokemon({ pokemon }) {
         alt={pokemon.name}
       />
       <div>
-        <h3>Número:</h3>
-        <p>#{pokemon.id}</p>
+        <h3>Número: </h3>
+        <p className={styles.id}>#{pokemon.id}</p>
       </div>
       <div>
         <h3>Tipo:</h3>
